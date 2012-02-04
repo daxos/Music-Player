@@ -1,0 +1,341 @@
+' Gambas class file
+
+
+STATIC PRIVATE $bDoNotMove AS Boolean
+
+PUBLIC SUB Form_Open()
+
+grid_Click
+
+selectlist.Add("Default")
+selectlist.Add("Otra")
+
+END
+
+
+PUBLIC SUB btnOpen_Click()
+
+  IF Dialog.OpenFile() THEN RETURN
+
+  lblTitle.Text = File.Name(Dialog.Path)
+  ' Approximation...
+  sldPos.MaxValue = 250
+
+  Music.Load(Dialog.path)
+  Music.play
+  lblTitle.Text = File.Name(Dialog.Path)
+  ' Approximation...
+  sldPos.MaxValue = 250
+  timMusic.Enabled = TRUE
+  btnPause.show
+
+CATCH
+
+  Message.Error(Error.Text)
+
+END
+
+PUBLIC SUB btnPlay_Click()
+
+
+  lblTitle.Text = File.Name("~/Música/" & GridView2.Current.text)
+  ' Approximation...
+  sldPos.MaxValue = 250
+
+  Music.Load("~/Música/" & GridView2.Current.text)
+  timMusic.Enabled = TRUE
+  Music.Play
+  btnPause.show
+  btnPlay.hide
+
+END
+
+PUBLIC SUB btnPause_Click()
+
+  Music.Pause
+  btnPause.hide
+  btnPlay2.show
+
+END
+
+PUBLIC SUB btnStop_Click()
+
+  Music.Stop
+  timMusic.Enabled = FALSE
+  lblPos.Text = ""
+  sldPos.Value = 0
+
+END
+
+PUBLIC SUB timMusic_Timer()
+
+  DIM iPos AS Integer
+  DIM iVal AS Integer
+  DIM sPos AS String
+  DIM iInd AS Integer
+
+  iPos = Music.Pos
+
+  IF NOT $bDoNotMove THEN
+    Object.Lock(sldPos)
+    IF iPos > sldPos.MaxValue THEN
+      sldPos.MaxValue = sldPos.MaxValue * 2
+    ENDIF
+    sldPos.Value = iPos
+    Object.Unlock(sldPos)
+  ENDIF
+
+  FOR iInd = 0 TO 2
+
+    iVal = iPos MOD 60
+    iPos = iPos \ 60
+    IF iInd THEN
+      sPos = Format(iVal, "00") & ":" & sPos
+    ELSE
+      sPos = Format(iVal, "00")
+    ENDIF
+
+  NEXT
+
+  lblPos.Text = sPos
+
+END
+
+PUBLIC SUB sldPos_Change()
+
+  Music.Pos = sldPos.Value
+
+END
+
+PUBLIC SUB sldPos_MouseDown()
+
+  $bDoNotMove = TRUE
+
+END
+
+PUBLIC SUB sldPos_MouseUp()
+
+  $bDoNotMove = FALSE
+
+END
+
+PUBLIC SUB sldVolume_Change()
+
+  Music.Volume = 1 - sldVolume.Value / sldVolume.MaxValue
+
+END
+
+PUBLIC SUB sound_Click()
+
+sldVolume.show
+sound2.show
+Sound.Visible = FALSE
+
+END
+
+
+PUBLIC SUB GridView2_DblClick()
+
+
+lblTitle.Text = File.Name("~/Música/" & GridView2.Current.text)
+  ' Approximation...
+  sldPos.MaxValue = 250
+
+  Music.Load("~/Música/" & GridView2.Current.text)
+  timMusic.Enabled = TRUE
+  Music.Play
+  btnPause.show
+
+END
+
+PUBLIC SUB GridView1_DblClick()
+
+lblTitle.Text = File.Name("~/Música/" & GridView1.Current.text)
+  ' Approximation...
+  sldPos.MaxValue = 250
+
+  Music.Load("~/Música/" & GridView1.Current.text)
+  timMusic.Enabled = TRUE
+  Music.Play
+  btnPause.show
+
+END
+
+PUBLIC SUB sound2_Click()
+
+Sound.Show
+sldVolume.Hide
+Sound2.Visible = FALSE
+
+END
+
+
+PUBLIC SUB btnPlay2_Click()
+
+btnPause.show
+Music.play
+
+END
+
+
+PUBLIC SUB siguiente_Click()
+
+IF GridView1.Visible = FALSE THEN
+GridView2.Row = GridView2.Row + 1
+lblTitle.Text = File.Name("~/Música/" & GridView2.Current.text)
+  ' Approximation...
+  sldPos.MaxValue = 250
+
+  Music.Load("~/Música/" & GridView2.Current.text)
+  
+ELSE
+
+GridView1.Row = GridView1.Row + 1
+lblTitle.Text = File.Name("~/Música/" & GridView1.Current.text)
+  ' Approximation...
+  sldPos.MaxValue = 250
+
+  Music.Load("~/Música/" & GridView1.Current.text)
+ 
+ENDIF
+
+ timMusic.Enabled = TRUE
+  Music.Play
+  btnPause.show
+
+END
+
+PUBLIC SUB anterior_Click()
+
+IF GridView1.Visible = FALSE THEN
+
+GridView2.Row = GridView2.Row - 1
+lblTitle.Text = File.Name("~/Música/" & GridView2.Current.text)
+  ' Approximation...
+  sldPos.MaxValue = 250
+
+  Music.Load("~/Música/" & GridView2.Current.text)
+  Music.Play
+  
+  ELSE
+
+GridView1.Row = GridView1.Row - 1
+lblTitle.Text = File.Name("~/Música/" & GridView1.Current.text)
+  ' Approximation...
+  sldPos.MaxValue = 250
+
+  Music.Load("~/Música/" & GridView1.Current.text)
+  Music.Play
+  
+ENDIF 
+
+timMusic.Enabled = TRUE
+btnPause.show
+
+END
+
+PUBLIC SUB btn1_Click()
+
+panel1.Show
+btn2.Show
+eliminar.Show
+
+END
+
+PUBLIC SUB btn2_Click()
+
+DIM song AS String
+DIM nombre AS String
+
+nombre = TextBox1.text
+song = GridView2.Current.Text
+
+SHELL "echo " & song & " >> ~/.local/share/music/" & nombre  
+
+END
+
+PUBLIC SUB crear_Click()
+
+SHELL "gedit ~/.local/share/music/otra"
+
+END
+
+
+PUBLIC SUB cancelar_Click()
+
+panel1.Hide
+btn2.hide
+eliminar.hide
+
+END
+
+PUBLIC SUB selectlist_Click()
+
+DIM titulos AS Boolean
+
+IF selectlist.Text = "Default" THEN 
+grid_Click 
+GridView1.Hide
+ELSE 
+
+GridView1.rows.count = 400
+GridView1.Columns.count = 2
+GridView1.Rows.Height = 35
+
+IF CheckBox1.value = -1 THEN
+FMain.GridView1.Header = 1
+titulos = -1
+ELSE
+FMain.GridView1.Header = 0
+titulos = 0
+ENDIF
+GridView1.Visible = TRUE
+
+GridView1.rows.count = 0
+GridView1.Columns.count = 0
+
+GridView1.rows.count = 400
+GridView1.Columns.count = 1
+playerlist.leer(fmain.GridView1, titulos)
+
+ENDIF
+END
+
+PUBLIC SUB grid_Click()
+
+DIM titulos AS Boolean
+
+GridView2.rows.count = 400
+GridView2.Columns.count = 2
+GridView2.Rows.Height = 35
+
+IF CheckBox1.value = -1 THEN
+FMain.GridView2.Header = 1
+titulos = -1
+ELSE
+FMain.GridView2.Header = 0
+titulos = 0
+ENDIF
+GridView2.Visible = TRUE
+
+GridView2.rows.count = 0
+GridView2.Columns.count = 0
+
+GridView2.rows.count = 400
+GridView2.Columns.count = 1
+musicmod.leer(fmain.GridView2, titulos)
+
+END
+
+
+PUBLIC SUB eliminar_Click()
+
+DIM song AS String
+
+song = GridView1.Current.Text
+
+SHELL "sed '/" & song & "/d' ~/.local/share/music/otra"
+
+GridView1.Refresh
+
+END

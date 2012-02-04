@@ -1,0 +1,12 @@
+* Thu Feb 02 2012 david <david@david> 0.5.4
+- Añadida la función playlist, con la posibilidad de añadir más canciones
+
+* Wed Feb 01 2012 david <david@david> 0.5.3
+- Los botones "next" y "previous" 100 % funcional
+
+* Tue Jan 31 2012 david <david@david> 0.5.2
+- Lanzamiento inicial
+- Mejorado reproductor de ejemplo de gambas
+- Añadido gridview para las canciones
+- Mejoras visuales
+

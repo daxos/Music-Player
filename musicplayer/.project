@@ -1,0 +1,22 @@
+# Gambas Project File 2.0
+# Compiled with Gambas 2.21.0
+Title=Music Player
+Startup=FMain
+Icon=Music-Itunes.png
+Version=0.5.5
+Library=gb.gui
+Library=gb.form
+Library=gb.sdl.sound
+Description=Reproductor de música
+TabSize=2
+ControlPublic=1
+ModulePublic=1
+Maintainer=david
+Address=david@david
+Url=http://www.endoftheinternet.com/
+License=General Public Licence
+UseRelease=1
+Systems=debian
+Menus=Applications/Sound
+Categories=AudioVideo
+Groups=sound
