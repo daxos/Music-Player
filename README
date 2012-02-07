@@ -1,0 +1,3 @@
+- Hay que poner las canciones en la carpeta /home/usuario/Música para que el programa lo reconozca.
+
+- Para modificar el playlist o añadir canciones en él, tenéis que crear en la ruta /home/usuario/.local/share la carpera de music y en ella añadir el archivo otra
