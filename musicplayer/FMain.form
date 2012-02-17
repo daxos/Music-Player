@@ -3,6 +3,7 @@
 { Form Form
   MoveScaled(0,0,63,40)
   Background = &HF0F0F0&
+  Drop = True
   Text = ("")
   Icon = Picture["Music-Itunes.png"]
   Border = Window.Fixed
@@ -33,6 +34,10 @@
       MoveScaled(12,31,3,3)
       Visible = False
       Text = ("")
+    }
+    { Timer1 #Timer
+      #X = 217
+      #Y = 203
     }
   }
   { btnOpen ToolButton
@@ -92,6 +97,7 @@
   }
   { lblTitle TextLabel
     MoveScaled(0,0,45,5)
+    Drop = True
     Padding = 4
     Text = ("Choose a music file...")
   }

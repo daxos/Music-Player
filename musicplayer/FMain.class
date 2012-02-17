@@ -5,11 +5,48 @@ STATIC PRIVATE $bDoNotMove AS Boolean
 
 PUBLIC SUB Form_Open()
 
+ME.Center
 grid_Click
-
 selectlist.Add("Default")
 selectlist.Add("Otra")
 
+
+END
+
+PUBLIC SUB form_Drop()
+
+DIM a AS String
+ 
+  a = Drag.Paste()
+  a = RTrim(a)
+
+  a = Replace$(a, "%20", " ")
+  a = Replace$(a, "%C3%A1", "á")
+  a = Replace$(a, "%C3%A9", "é")
+  a = Replace$(a, "%C3%AD", "í")
+  a = Replace$(a, "%C3%B3", "ó")
+  a = Replace$(a, "%C3%BA", "ú")
+  a = Replace$(a, "%C3%81", "Á")
+  a = Replace$(a, "%C3%89", "É")
+  a = Replace$(a, "%C3%8D", "Í")
+  a = Replace$(a, "%C3%93", "Ó")
+  a = Replace$(a, "%C3%9A", "Ú")
+  a = Replace$(a, "%C3%B1", "ñ")
+  a = Replace$(a, "%C3%91", "Ñ")
+  a = Replace$(a, "file://", "") 
+  a = Replace$(a, "%5B", "[") 
+  a = Replace$(a, "%5D", "]") 
+  
+  lblTitle.Text = File.Name(a)
+  ' Approximation...
+  sldPos.MaxValue = 250
+
+  Music.Load(a)
+  timer1.Enabled = TRUE
+  btnPause.show
+  Music.Play 
+
+  
 END
 
 
@@ -83,6 +120,50 @@ PUBLIC SUB timMusic_Timer()
     ENDIF
     sldPos.Value = iPos
     Object.Unlock(sldPos)
+    
+  ENDIF
+
+  FOR iInd = 0 TO 2
+
+    iVal = iPos MOD 60
+    iPos = iPos \ 60
+    IF iInd THEN
+      sPos = Format(iVal, "00") & ":" & sPos
+    ELSE
+      sPos = Format(iVal, "00")
+    ENDIF
+
+  NEXT
+
+  lblPos.Text = sPos
+
+WAIT 1
+
+IF sldPos.value = 0 THEN 
+ siguiente_Click
+
+ENDIF 
+
+END
+
+
+PUBLIC SUB timer1_Timer()
+
+  DIM iPos AS Integer
+  DIM iVal AS Integer
+  DIM sPos AS String
+  DIM iInd AS Integer
+
+  iPos = Music.Pos
+
+  IF NOT $bDoNotMove THEN
+    Object.Lock(sldPos)
+    IF iPos > sldPos.MaxValue THEN
+      sldPos.MaxValue = sldPos.MaxValue * 2
+    ENDIF
+    sldPos.Value = iPos
+    Object.Unlock(sldPos)
+    
   ENDIF
 
   FOR iInd = 0 TO 2
@@ -186,7 +267,7 @@ lblTitle.Text = File.Name("~/Música/" & GridView2.Current.text)
   ' Approximation...
   sldPos.MaxValue = 250
 
-  Music.Load("~/Música/" & GridView2.Current.text)
+  Music.Load("~/Música/" & GridView2.Current.text) 
   
 ELSE
 
@@ -339,3 +420,22 @@ SHELL "sed '/" & song & "/d' ~/.local/share/music/otra"
 GridView1.Refresh
 
 END
+
+PUBLIC SUB lblTitle_MouseDown()
+
+IF Dialog.OpenFile() THEN RETURN
+
+  lblTitle.Text = File.Name(Dialog.Path)
+  ' Approximation...
+  sldPos.MaxValue = 250
+
+  Music.Load(Dialog.path)
+  Music.play
+  lblTitle.Text = File.Name(Dialog.Path)
+  ' Approximation...
+  sldPos.MaxValue = 250
+  timMusic.Enabled = TRUE
+  btnPause.show
+
+END
+

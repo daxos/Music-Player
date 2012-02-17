@@ -1,3 +1,9 @@
+* Sat Feb 04 2012 david <david@david> 0.5.6
+- El reproducto cambia de pista automáticamente cuando termina una canción
+
+* Thu Feb 02 2012 david <david@david> 0.5.5
+- Pequeños cambios en funcionalidades
+
 * Thu Feb 02 2012 david <david@david> 0.5.4
 - Añadida la función playlist, con la posibilidad de añadir más canciones
 
