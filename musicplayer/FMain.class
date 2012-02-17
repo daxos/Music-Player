@@ -411,13 +411,13 @@ END
 
 PUBLIC SUB eliminar_Click()
 
-DIM song AS String
+'DIM song AS String
 
-song = GridView1.Current.Text
+'song = GridView1.Current.Text
 
-SHELL "sed '/" & song & "/d' ~/.local/share/music/otra"
+'SHELL "sed '/" & song & "/d' ~/.local/share/music/otra"
 
-GridView1.Refresh
+'GridView1.Refresh
 
 END
 

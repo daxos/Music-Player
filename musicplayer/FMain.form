@@ -90,13 +90,13 @@
     Text = ("CheckBox1")
   }
   { lblPos Label
-    MoveScaled(45,0,15,3)
+    MoveScaled(46,0,15,3)
     Font = Font["14"]
     Text = ("")
     Alignment = Align.Right
   }
   { lblTitle TextLabel
-    MoveScaled(0,0,45,5)
+    MoveScaled(1,0,43,5)
     Drop = True
     Padding = 4
     Text = ("Choose a music file...")
@@ -130,14 +130,14 @@
     MoveScaled(22,7,3,3)
     ToolTip = ("Crear Playlist")
     Text = ("")
-    Picture = Picture["añadir.png"]
+    Picture = Picture["modificar.png"]
   }
   { btn2 ToolButton
     MoveScaled(22,7,3,3)
     Visible = False
     ToolTip = ("Crear Playlist")
     Text = ("")
-    Picture = Picture["añadir.png"]
+    Picture = Picture["modificar.png"]
   }
   { selectlist ComboBox
     MoveScaled(1,4,18,3)
